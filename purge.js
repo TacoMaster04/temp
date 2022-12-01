@@ -20,14 +20,14 @@ module.exports = {
             if (isNaN(amount) || amount < 1 || amount > 100) return message.channel.send(`This command was used incorrectly, please try again.`).then(msg => setTimeout(() => msg.delete(), 5000));
             const messages = await channel.messages.fetch({ limit: amount });
             if (member) {
-            let i = 0;
-            const filteredMessages = [];
-            messages.filter((m) => {
-                if (m.author.id === member.id && amount > i) {
-                    filteredMessages.push(m);
-                    i++
-                }
-            });
+                let i = 0;
+                const filteredMessages = [];
+                messages.filter((m) => {
+                    if (m.author.id === member.id && amount > i) {
+                        filteredMessages.push(m);
+                        i++
+                    }
+                });
             await message.channel.bulkDelete(filteredMessages, true);
             await message.channel.send(`\`\`\`diff\nMessages Purged\n- Amount Deleted: ${filteredMessages.length}\n- Requested By: ${message.member.displayName} (${message.author.tag}|${message.author.id})\n- Member's Messages: ${member.nickname === null ? `No Nickname Set` : member.nickname} (${member.user.username}#${member.user.discriminator}|${member.id})\`\`\``).then(msg => setTimeout(() => msg.delete(), 5000));
             } else {
