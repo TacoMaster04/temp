@@ -14,12 +14,12 @@ module.exports = {
                         i++
                     }
                 })
-            await message.channel.bulkDelete(filteredMessages)
+            await message.channel.bulkDelete(filteredMessages, true)
             await message.channel.send(`\`\`\`diff\nMessages Purged\n- Amount Deleted: ${amount}\n- Requested By: ${message.member.displayName} (${message.author.tag}|${message.author.id})\`\`\``).then(msg => setTimeout(() => msg.delete(), 5000))
         } else {
             const amount = Number(args[0])
             const member = message.mentions.members.first()
-            const messages = await message.channel.messages.fetch()
+            const messages = getAllMessages(message.channel)
             if (isNaN(amount) || amount < 1) return message.channel.send(`This command was used incorrectly, please try again.`).then(msg => setTimeout(() => msg.delete(), 5000))
             if (member) {
                 let i = 0;
@@ -30,10 +30,10 @@ module.exports = {
                         i++
                     }
                 })
-                await message.channel.bulkDelete(filteredMessages)
+                await message.channel.bulkDelete(filteredMessages, true)
                 await message.channel.send(`\`\`\`diff\nMessages Purged\n- Amount Deleted: ${filteredMessages.length}\n- Requested By: ${message.member.displayName} (${message.author.tag}|${message.author.id})\n- Member's Messages: ${member.nickname === null ? `No Nickname Set` : member.nickname} (${member.user.username}#${member.user.discriminator}|${member.id})\`\`\``).then(msg => setTimeout(() => msg.delete(), 5000))
             } else {
-                await message.channel.bulkDelete(amount)
+                await message.channel.bulkDelete(amount, true)
                 await message.channel.send(`\`\`\`diff\nMessages Purged\n- Amount Deleted: ${amount}\n- Requested By: ${message.member.displayName} (${message.author.tag}|${message.author.id})\`\`\``).then(msg => setTimeout(() => msg.delete(), 5000))
             }
         }
